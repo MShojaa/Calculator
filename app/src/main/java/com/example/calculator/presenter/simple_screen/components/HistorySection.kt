@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,7 +47,7 @@ fun HistorySection(modifier: Modifier, equationHistory: List<String>) {
                     )
                 }
                 .padding(5.dp), contentAlignment = Alignment.CenterEnd) {
-                Text(text = historyItem, fontSize = 25.sp)
+                Text(text = historyItem, fontSize = 25.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     }
