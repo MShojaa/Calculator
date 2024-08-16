@@ -6,11 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModelProvider
-import com.example.calculator.domain.CalculatorViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.calculator.presenter.simple_screen.CalculatorViewModel
 import com.example.calculator.presenter.simple_screen.SimpleScreen
 import com.example.calculator.ui.theme.CalculatorTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var viewModel: CalculatorViewModel
@@ -20,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CalculatorTheme {
-                viewModel = ViewModelProvider(this)[CalculatorViewModel::class.java]
+                viewModel = hiltViewModel()
                 App(viewModel)
             }
         }
@@ -28,12 +30,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun App(viewModel: CalculatorViewModel) {
+fun App(viewModel: CalculatorViewModel = hiltViewModel()) {
     SimpleScreen(viewModel) { action -> viewModel.onButtonClick(action) }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun AppPreview() {
-//    App()
+    App()
 }

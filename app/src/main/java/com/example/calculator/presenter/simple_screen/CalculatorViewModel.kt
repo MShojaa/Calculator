@@ -1,14 +1,19 @@
-package com.example.calculator.domain
+package com.example.calculator.presenter.simple_screen
 
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.calculator.domain.ButtonAction
+import com.example.calculator.domain.MathOperation
 import com.example.calculator.presenter.components.CalculatorState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CalculatorViewModel : ViewModel() {
+@HiltViewModel
+class CalculatorViewModel @Inject constructor() : ViewModel() {
     private val _state = MutableStateFlow(CalculatorState())
     val state = _state.asStateFlow()
 
@@ -27,12 +32,16 @@ class CalculatorViewModel : ViewModel() {
     }
 
     private fun String.removeDecimal(): String {
-        return if (this[lastIndex - 1] == '.' && this[lastIndex] == '0')
-            this.dropLast(2)
-        else if (this[lastIndex] == '.')
-            this.dropLast(1)
-        else
-            this.dropLast(0)
+        return if (isNotEmpty()) {
+            if (lastIndex > 1 && this[lastIndex] == '0' && this[lastIndex - 1] == '.')
+                this.dropLast(2)
+            else if (this[lastIndex] == '.')
+                this.dropLast(1)
+            else
+                this
+        } else {
+            this
+        }
     }
 
     private fun calculate(currentState: CalculatorState): String {
